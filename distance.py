@@ -1,10 +1,7 @@
 from pyrivet import rivet
 from pyrivet import hilbert_distance
-import seaborn as sns
 import numpy as np
 import os
-
-from matplotlib import pyplot as plt
 
 directory_in_str = '/home/milad/rivet/results_curvature/'
 
@@ -50,9 +47,10 @@ for severity in [1, 2, 3, 4]:
                         index = index + 1
                         print('file: ', filename, ' ..')
                         b = rivet.betti_file(directory_in_str + filename, homology=1, x=40, y=40)
+                        np.save(filename + '.npy', b.graded_rank)
                         face_h1_betti.append(b)
-                        plt.imshow(b.graded_rank, origin='lower', aspect='auto', cmap='coolwarm')
-                        plt.savefig('/home/milad/rivet/pics_curvature/' + filename + '.png')
+                        # plt.imshow(b.graded_rank, origin='lower', aspect='auto', cmap='coolwarm')
+                        # plt.savefig('/home/milad/rivet/pics_curvature/' + filename + '.png')
 
 
 distances = np.zeros((count, count))
@@ -65,11 +63,6 @@ for index1 in range(0, count):
         distances[index1, index2] = h
 
 
-sns.set()
-colors = ["white", "light grey", "grey", "dark grey", "light green", "green", "dark green",  "light blue",  "blue", "dark blue",  "butter", "orange", "dark orange", "light red",  "red", "dark red", "black"]
-#sns.heatmap(l2, cmap=sns.xkcd_palette(colors), norm=PowerNorm(gamma=1), vmin=0, vmax=l2.max(), )
+np.save('distances.npy', distances)
 
-sns.heatmap(distances)
-# plt.show()
-plt.savefig('/home/milad/hilbert_heights.png', dpi=1000)
 
