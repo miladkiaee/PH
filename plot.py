@@ -7,6 +7,8 @@ from argparse import ArgumentParser
 
 parser = ArgumentParser()
 
+directory_in_str = '/home/milad/rivet/results_height/'
+
 parser.add_argument("-i", "--input", default= "", help="input file name")
 parser.add_argument("-o", "--output", default= "", help="output file name")
 
@@ -15,12 +17,13 @@ args = parser.parse_args()
 data = np.load(args.input)
 
 sns.set()
-colors = ["white", "light grey", "grey", "dark grey", "light green",
-          "green", "dark green",  "light blue",  "blue", "dark blue",
-          "butter", "orange", "dark orange", "light red",  "red", "dark red", "black"]
 
-sns.heatmap(data, cmap=sns.xkcd_palette(colors), norm=PowerNorm(gamma=1), vmin=0, vmax=data.max(), )
+colors = ["black", "dark blue", "dark red", "red",  "butter",  "white"]
+midpoint = (data.max() - data.min()) / 2
 
-# sns.heatmap(distances)
-plt.show()
+sns.heatmap(data, cmap=sns.xkcd_palette(colors), norm=PowerNorm(gamma=1), vmin=0, vmax=data.max(), center=midpoint )
+
+# sns.heatmap(data, cmap=sns.color_palette("RdYlBu", 100), center=midpoint)
+
+#plt.show()
 plt.savefig(args.output, dpi=1000)
